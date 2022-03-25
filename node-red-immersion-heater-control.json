@@ -1,0 +1,993 @@
+[
+    {
+        "id": "3c8f4919.644d06",
+        "type": "subflow",
+        "name": "GivEnergy Rest API",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 180,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "d2da77e0.5b1258"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 1540,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "146c44fa.43a18b",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "color": "#DDAA99",
+        "status": {
+            "x": 1680,
+            "y": 180,
+            "wires": [
+                {
+                    "id": "abbe4eb7.82fc7",
+                    "port": 0
+                }
+            ]
+        }
+    },
+    {
+        "id": "2d22c520.42899a",
+        "type": "function",
+        "z": "3c8f4919.644d06",
+        "name": "Create url",
+        "func": "msg.headers.Authorization= \"Bearer \" + global.get(\"GivEnergyApiKey\");\n\nmsg.url = global.get(\"GivEnergyAPIURL\") + msg.apiCall;\n\n//params are added automatically\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1190,
+        "y": 80,
+        "wires": [
+            [
+                "146c44fa.43a18b"
+            ]
+        ]
+    },
+    {
+        "id": "146c44fa.43a18b",
+        "type": "http request",
+        "z": "3c8f4919.644d06",
+        "name": "Make the Call",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 1370,
+        "y": 80,
+        "wires": [
+            [
+                "abbe4eb7.82fc7"
+            ]
+        ]
+    },
+    {
+        "id": "36a0d420.a5f1dc",
+        "type": "change",
+        "z": "3c8f4919.644d06",
+        "name": "Set Params in payload",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "params",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 980,
+        "y": 80,
+        "wires": [
+            [
+                "2d22c520.42899a"
+            ]
+        ]
+    },
+    {
+        "id": "d2da77e0.5b1258",
+        "type": "change",
+        "z": "3c8f4919.644d06",
+        "name": "payload {}",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 360,
+        "y": 80,
+        "wires": [
+            [
+                "3ff31db7.d3a562"
+            ]
+        ]
+    },
+    {
+        "id": "3ff31db7.d3a562",
+        "type": "change",
+        "z": "3c8f4919.644d06",
+        "name": "Set Headers {}",
+        "rules": [
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 80,
+        "wires": [
+            [
+                "cfda7646.16fa98"
+            ]
+        ]
+    },
+    {
+        "id": "cfda7646.16fa98",
+        "type": "change",
+        "z": "3c8f4919.644d06",
+        "name": "content-type",
+        "rules": [
+            {
+                "t": "set",
+                "p": "headers.content-type",
+                "pt": "msg",
+                "to": "application/json",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 750,
+        "y": 80,
+        "wires": [
+            [
+                "36a0d420.a5f1dc"
+            ]
+        ]
+    },
+    {
+        "id": "abbe4eb7.82fc7",
+        "type": "function",
+        "z": "3c8f4919.644d06",
+        "name": "",
+        "func": "var statusMsg;\nif (msg.statusCode==200) \n{\n    statusMsg = { fill:\"green\", shape:\"dot\", text:\"Call successful\" };\n} else\n{\n    statusMsg = { fill:\"red\", shape:\"dot\", text:\"Call failed\" };\n}\n\nmsg.payload= statusMsg;\nmsg.payload.topic = \"solar\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1540,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "07b8b9c1ab058a4b",
+        "type": "tab",
+        "label": "GivEnergy API - Home Assistant",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "fc396cb3ac39a24f",
+        "type": "subflow:3c8f4919.644d06",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "env": [],
+        "x": 780,
+        "y": 300,
+        "wires": [
+            [
+                "b66c36cee7a300e4",
+                "56178a5431bc83b1"
+            ]
+        ]
+    },
+    {
+        "id": "67c3660acbc48e1f",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Latest GE data",
+        "rules": [
+            {
+                "t": "set",
+                "p": "apiCall",
+                "pt": "msg",
+                "to": "inverter/<GivEnergy inverter serial number>/system-data/latest",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 370,
+        "y": 300,
+        "wires": [
+            [
+                "01fa4ac995a5fa6d"
+            ]
+        ]
+    },
+    {
+        "id": "ecce20f441b03b74",
+        "type": "inject",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "props": [],
+        "repeat": "300",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 150,
+        "y": 300,
+        "wires": [
+            [
+                "67c3660acbc48e1f",
+                "b9d9bc33bf4d92c6"
+            ]
+        ]
+    },
+    {
+        "id": "01fa4ac995a5fa6d",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "GET",
+        "rules": [
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "GET",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 300,
+        "wires": [
+            [
+                "fc396cb3ac39a24f"
+            ]
+        ]
+    },
+    {
+        "id": "a63f74ca05dbd3e1",
+        "type": "inject",
+        "z": "07b8b9c1ab058a4b",
+        "name": "API Key",
+        "props": [
+            {
+                "p": "payload.apiKey",
+                "v": "<insert API key>",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 160,
+        "y": 120,
+        "wires": [
+            [
+                "06c6c79fa454123c"
+            ]
+        ]
+    },
+    {
+        "id": "06c6c79fa454123c",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Set apiKey",
+        "rules": [
+            {
+                "t": "set",
+                "p": "GivEnergyApiKey",
+                "pt": "global",
+                "to": "payload.apiKey",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 440,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0fa0032f080b353c",
+        "type": "inject",
+        "z": "07b8b9c1ab058a4b",
+        "name": "https://api.givenergy.cloud/v1/",
+        "props": [
+            {
+                "p": "url",
+                "v": "https://api.givenergy.cloud/v1/",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 750,
+        "y": 120,
+        "wires": [
+            [
+                "ea4ce4544c9fdb84"
+            ]
+        ]
+    },
+    {
+        "id": "ea4ce4544c9fdb84",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Set URL",
+        "rules": [
+            {
+                "t": "set",
+                "p": "GivEnergyAPIURL",
+                "pt": "global",
+                "to": "url",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 970,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c907db1a631f577c",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Step 1 - Set API ( change inject node with your key )",
+        "info": "",
+        "x": 290,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "a757a1826706e568",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Step 2 - Set URL",
+        "info": "",
+        "x": 720,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "a7d9b2846e6d5a44",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Step 3a - Query APIs ( optionally view output in debug window )",
+        "info": "",
+        "x": 330,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "b66c36cee7a300e4",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "GE API output",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "3b53fd1b624a5183",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Create forecast energy",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "66e33d5587ddd5d4",
+        "type": "function",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Extract GE data",
+        "func": "var batteryData = msg.payload.data\nvar gridPower = batteryData.grid.power\nvar SoC = batteryData.battery.percent\nvar solarPower = batteryData.solar.power\nvar inverterPower = batteryData.inverter.power\nvar load = batteryData.consumption\nvar forecastEnergy = msg.payload.result[msg.date.nextHour] - msg.payload.result[msg.date.now]\nvar newMsg = { load, gridPower, SoC, solarPower, forecastEnergy, inverterPower }\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 740,
+        "wires": [
+            [
+                "3b53fd1b624a5183",
+                "0d84438b10421337"
+            ]
+        ]
+    },
+    {
+        "id": "0d84438b10421337",
+        "type": "switch",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Check SoC",
+        "property": "SoC",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "100",
+                "vt": "num"
+            },
+            {
+                "t": "lt",
+                "v": "100",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 590,
+        "y": 740,
+        "wires": [
+            [
+                "ae02f83185565dd5"
+            ],
+            [
+                "238bfef97e66f460"
+            ]
+        ]
+    },
+    {
+        "id": "661069883157c5d8",
+        "type": "api-call-service",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Turn immersion on",
+        "server": "9abb00aef19ebed9",
+        "version": 5,
+        "debugenabled": false,
+        "domain": "notify",
+        "service": "mobile_app_g8441",
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "data": "{\"message\":\"Turning immersion on\",\"data\":{\"type\":\"announce\"},\"target\":\"mobile_app_g8441\"}",
+        "dataType": "json",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "x": 1330,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "958bc17db8e465a5",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Forecast data",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "968b84a11c2b83e0",
+        "type": "json",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 570,
+        "y": 400,
+        "wires": [
+            [
+                "958bc17db8e465a5",
+                "56178a5431bc83b1"
+            ]
+        ]
+    },
+    {
+        "id": "b9d9bc33bf4d92c6",
+        "type": "http request",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Solar forecast",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.forecast.solar/<insert API key>/estimate/watthours/52/0/25/0/3",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 380,
+        "y": 400,
+        "wires": [
+            [
+                "968b84a11c2b83e0"
+            ]
+        ]
+    },
+    {
+        "id": "6b9aa19e9e75d558",
+        "type": "moment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "topic": "",
+        "input": "",
+        "inputType": "date",
+        "inTz": "Europe/London",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "YYYY-MM-DD HH:MM:SS",
+        "locale": "en-GB",
+        "output": "date",
+        "outputType": "msg",
+        "outTz": "Europe/London",
+        "x": 680,
+        "y": 560,
+        "wires": [
+            [
+                "a5d85cfb6c4aae43"
+            ]
+        ]
+    },
+    {
+        "id": "d662657d187e695a",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Forecast hour",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1320,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "a5d85cfb6c4aae43",
+        "type": "function",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Find the next hour for forecast",
+        "func": "var date = msg.date.split(\" \")[0]\nvar time = msg.date.split(\" \")[1]\nvar hour = Number(time.split(\":\")[0])\nvar half = Number(time.split(\":\")[1])\nvar halfStr = \"\"\nif (half < 30) {\n    halfStr = \":00:00\"\n} else {\n    halfStr = \":30:00\"\n}\nvar nextHour = hour + 1\nvar leadingZeroNow = \"\"\nvar leadingZeroNext = \"\"\nif (Number(hour) < 10) {\n    leadingZeroNow = \"0\"\n}\nif (Number(nextHour) < 10) {\n    leadingZeroNext = \"0\"\n}\nvar nowStr = date + \" \" + leadingZeroNow + hour + halfStr\nvar nextHourStr = date + \" \" + leadingZeroNext + nextHour + halfStr\nreturn {...msg,  date: { now: nowStr, nextHour: nextHourStr } };",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 560,
+        "wires": [
+            [
+                "d662657d187e695a",
+                "66e33d5587ddd5d4"
+            ]
+        ]
+    },
+    {
+        "id": "29e2c21712a0534c",
+        "type": "join",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "mode": "custom",
+        "build": "merged",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": true,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 350,
+        "y": 560,
+        "wires": [
+            [
+                "6b9aa19e9e75d558",
+                "aaa647d065064d73"
+            ]
+        ]
+    },
+    {
+        "id": "56178a5431bc83b1",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "solar",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 730,
+        "y": 480,
+        "wires": [
+            [
+                "29e2c21712a0534c"
+            ]
+        ]
+    },
+    {
+        "id": "aaa647d065064d73",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Combined data",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "5e8648ed17c470be",
+        "type": "switch",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Enough solar for recharge?",
+        "property": "forecastEnergy",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "1000",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1080,
+        "y": 720,
+        "wires": [
+            [
+                "661069883157c5d8",
+                "ffcbea95092a1dc1"
+            ],
+            [
+                "a3f16b7807bc7bca"
+            ]
+        ]
+    },
+    {
+        "id": "a3f16b7807bc7bca",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Not enough solar",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "forecastEnergy",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1330,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "17ca43154051aeb8",
+        "type": "switch",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Immersion finished heating?",
+        "property": "load",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lt",
+                "v": "2000",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1100,
+        "y": 900,
+        "wires": [
+            [
+                "48d78eb1485299e5",
+                "d499e2fcd9132861"
+            ]
+        ]
+    },
+    {
+        "id": "48d78eb1485299e5",
+        "type": "api-call-service",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Turn off immersion",
+        "server": "9abb00aef19ebed9",
+        "version": 5,
+        "debugenabled": false,
+        "domain": "notify",
+        "service": "mobile_app_g8441",
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "data": "{\"message\":\"Turning off immersion\",\"data\":{\"type\":\"announce\"},\"target\":\"mobile_app_g8441\"}",
+        "dataType": "json",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "x": 1330,
+        "y": 900,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "76dfa1a833b4f98f",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "If immersion was previously on and now inverter load is < 2,000 then assume water heating has stopped",
+        "info": "",
+        "x": 1070,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "ffcbea95092a1dc1",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Immersion \"on\"",
+        "rules": [
+            {
+                "t": "set",
+                "p": "immersion",
+                "pt": "flow",
+                "to": "on",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1320,
+        "y": 640,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "238bfef97e66f460",
+        "type": "switch",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Immersion currently on?",
+        "property": "immersion",
+        "propertyType": "flow",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "on",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 830,
+        "y": 900,
+        "wires": [
+            [
+                "17ca43154051aeb8"
+            ]
+        ]
+    },
+    {
+        "id": "ae02f83185565dd5",
+        "type": "switch",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Is immersion off?",
+        "property": "immersion",
+        "propertyType": "flow",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "on",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 810,
+        "y": 720,
+        "wires": [
+            [
+                "5e8648ed17c470be"
+            ]
+        ]
+    },
+    {
+        "id": "d499e2fcd9132861",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Immersion \"off\"",
+        "rules": [
+            {
+                "t": "set",
+                "p": "immersion",
+                "pt": "flow",
+                "to": "off",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1320,
+        "y": 860,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b3157fe841130662",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "More than 1,000 Wh forecast in next hour?",
+        "info": "",
+        "x": 1040,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "d92eaf637e79542e",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Step 3b - Process solar energy forecast data",
+        "info": "",
+        "x": 270,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "5f8f6f1e8988c082",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Step 3c - Check SoC and decide if immersion should be on or off",
+        "info": "",
+        "x": 330,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "9abb00aef19ebed9",
+        "type": "server",
+        "name": "Home Assistant",
+        "version": 2,
+        "addon": false,
+        "rejectUnauthorizedCerts": false,
+        "ha_boolean": "y|yes|true|on|home|open",
+        "connectionDelay": true,
+        "cacheJson": true,
+        "heartbeat": false,
+        "heartbeatInterval": "30"
+    }
+]
