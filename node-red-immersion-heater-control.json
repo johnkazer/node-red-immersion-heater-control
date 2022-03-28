@@ -543,7 +543,9 @@
         "x": 1330,
         "y": 700,
         "wires": [
-            []
+            [
+                "d9b434a4d617f95c"
+            ]
         ]
     },
     {
@@ -834,7 +836,9 @@
         "x": 1330,
         "y": 900,
         "wires": [
-            []
+            [
+                "36b4a319115a6fbe"
+            ]
         ]
     },
     {
@@ -976,6 +980,122 @@
         "x": 330,
         "y": 640,
         "wires": []
+    },
+    {
+        "id": "d9b434a4d617f95c",
+        "type": "api-call-service",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Turn immersion on",
+        "server": "9abb00aef19ebed9",
+        "version": 5,
+        "debugenabled": false,
+        "domain": "switch",
+        "service": "turn_on",
+        "areaId": [],
+        "deviceId": [
+            "f2c3a754b3fb3db2e9264f33aa096cc4"
+        ],
+        "entityId": [
+            "switch.frient_immersion_switch_on_off"
+        ],
+        "data": "",
+        "dataType": "json",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "x": 1590,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "925710ad6c1f3a4c",
+        "type": "inject",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Force immersion ON",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1590,
+        "y": 620,
+        "wires": [
+            [
+                "d9b434a4d617f95c"
+            ]
+        ]
+    },
+    {
+        "id": "36b4a319115a6fbe",
+        "type": "api-call-service",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Turn immersion off",
+        "server": "9abb00aef19ebed9",
+        "version": 5,
+        "debugenabled": false,
+        "domain": "switch",
+        "service": "turn_off",
+        "areaId": [],
+        "deviceId": [
+            "f2c3a754b3fb3db2e9264f33aa096cc4"
+        ],
+        "entityId": [
+            "switch.frient_immersion_switch_on_off"
+        ],
+        "data": "",
+        "dataType": "json",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "x": 1590,
+        "y": 900,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a6941fb12e455bf2",
+        "type": "inject",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Force immersion OFF",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1600,
+        "y": 820,
+        "wires": [
+            [
+                "36b4a319115a6fbe"
+            ]
+        ]
     },
     {
         "id": "9abb00aef19ebed9",
