@@ -195,7 +195,7 @@
         "type": "function",
         "z": "3c8f4919.644d06",
         "name": "",
-        "func": "var statusMsg;\nif (msg.statusCode==200) \n{\n    statusMsg = { fill:\"green\", shape:\"dot\", text:\"Call successful\" };\n} else\n{\n    statusMsg = { fill:\"red\", shape:\"dot\", text:\"Call failed\" };\n}\n\nmsg.payload= statusMsg;\nmsg.payload.topic = \"solar\"\nreturn msg;",
+        "func": "var statusMsg;\nif (msg.statusCode==200) \n{\n    statusMsg = { fill:\"green\", shape:\"dot\", text:\"Call successful\" };\n} else\n{\n    statusMsg = { fill:\"red\", shape:\"dot\", text:\"Call failed\" };\n}\n\nmsg.payload= statusMsg;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -226,7 +226,7 @@
         "wires": [
             [
                 "b66c36cee7a300e4",
-                "56178a5431bc83b1"
+                "9525b2fc1acc3897"
             ]
         ]
     },
@@ -272,8 +272,7 @@
         "y": 300,
         "wires": [
             [
-                "67c3660acbc48e1f",
-                "b9d9bc33bf4d92c6"
+                "67c3660acbc48e1f"
             ]
         ]
     },
@@ -443,11 +442,11 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
+        "complete": "payload.data",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1060,
+        "x": 1240,
         "y": 300,
         "wires": []
     },
@@ -502,9 +501,7 @@
                 "vt": "num"
             },
             {
-                "t": "lt",
-                "v": "100",
-                "vt": "num"
+                "t": "else"
             }
         ],
         "checkall": "true",
@@ -557,12 +554,12 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
+        "complete": "payload.result",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1060,
-        "y": 400,
+        "x": 820,
+        "y": 420,
         "wires": []
     },
     {
@@ -574,11 +571,11 @@
         "action": "",
         "pretty": false,
         "x": 570,
-        "y": 400,
+        "y": 420,
         "wires": [
             [
                 "958bc17db8e465a5",
-                "56178a5431bc83b1"
+                "3c7b1fa9304d4c26"
             ]
         ]
     },
@@ -592,12 +589,12 @@
         "paytoqs": "ignore",
         "url": "https://api.forecast.solar/<insert API key>/estimate/watthours/52/0/25/0/3",
         "tls": "",
-        "persist": false,
+        "persist": true,
         "proxy": "",
         "authType": "",
         "senderr": false,
         "x": 380,
-        "y": 400,
+        "y": 420,
         "wires": [
             [
                 "968b84a11c2b83e0"
@@ -621,7 +618,7 @@
         "output": "date",
         "outputType": "msg",
         "outTz": "Europe/London",
-        "x": 680,
+        "x": 700,
         "y": 560,
         "wires": [
             [
@@ -667,62 +664,6 @@
         ]
     },
     {
-        "id": "29e2c21712a0534c",
-        "type": "join",
-        "z": "07b8b9c1ab058a4b",
-        "name": "",
-        "mode": "custom",
-        "build": "merged",
-        "property": "payload",
-        "propertyType": "msg",
-        "key": "topic",
-        "joiner": "\\n",
-        "joinerType": "str",
-        "accumulate": true,
-        "timeout": "",
-        "count": "2",
-        "reduceRight": false,
-        "reduceExp": "",
-        "reduceInit": "",
-        "reduceInitType": "",
-        "reduceFixup": "",
-        "x": 350,
-        "y": 560,
-        "wires": [
-            [
-                "6b9aa19e9e75d558",
-                "aaa647d065064d73"
-            ]
-        ]
-    },
-    {
-        "id": "56178a5431bc83b1",
-        "type": "change",
-        "z": "07b8b9c1ab058a4b",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "topic",
-                "pt": "msg",
-                "to": "solar",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 730,
-        "y": 480,
-        "wires": [
-            [
-                "29e2c21712a0534c"
-            ]
-        ]
-    },
-    {
         "id": "aaa647d065064d73",
         "type": "debug",
         "z": "07b8b9c1ab058a4b",
@@ -735,7 +676,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 660,
+        "x": 680,
         "y": 600,
         "wires": []
     },
@@ -799,16 +740,22 @@
                 "t": "lt",
                 "v": "2000",
                 "vt": "num"
+            },
+            {
+                "t": "else"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 1,
+        "outputs": 2,
         "x": 820,
         "y": 860,
         "wires": [
             [
                 "83ed4f1217dca428"
+            ],
+            [
+                "5e3e187dc22ab22b"
             ]
         ]
     },
@@ -1093,8 +1040,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 860,
-        "y": 980,
+        "x": 840,
+        "y": 820,
         "wires": [
             [
                 "83ed4f1217dca428"
@@ -1295,6 +1242,80 @@
         "wires": [
             []
         ]
+    },
+    {
+        "id": "9525b2fc1acc3897",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Save GE data",
+        "rules": [
+            {
+                "t": "set",
+                "p": "GE",
+                "pt": "msg",
+                "to": "payload.data",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1020,
+        "y": 300,
+        "wires": [
+            [
+                "b9d9bc33bf4d92c6"
+            ]
+        ]
+    },
+    {
+        "id": "3c7b1fa9304d4c26",
+        "type": "function",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Combine GE and forecast data",
+        "func": "var combinedData = { data: msg.GE, result: msg.payload.result }\nmsg.payload = combinedData\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 560,
+        "wires": [
+            [
+                "6b9aa19e9e75d558",
+                "aaa647d065064d73"
+            ]
+        ]
+    },
+    {
+        "id": "5e3e187dc22ab22b",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Probably stll heating",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1100,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "f113175251d6f212",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "If something else is generating > 2,000 load it doesn't really matter as the thermostat will operate",
+        "info": "",
+        "x": 950,
+        "y": 1000,
+        "wires": []
     },
     {
         "id": "9abb00aef19ebed9",
