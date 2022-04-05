@@ -463,8 +463,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 320,
-        "y": 840,
+        "x": 260,
+        "y": 880,
         "wires": []
     },
     {
@@ -491,14 +491,19 @@
         "id": "0d84438b10421337",
         "type": "switch",
         "z": "07b8b9c1ab058a4b",
-        "name": "Check SoC",
-        "property": "SoC",
-        "propertyType": "msg",
+        "name": "Immersion on or off?",
+        "property": "immersion",
+        "propertyType": "flow",
         "rules": [
             {
                 "t": "eq",
-                "v": "100",
-                "vt": "num"
+                "v": "off",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "on",
+                "vt": "str"
             },
             {
                 "t": "else"
@@ -506,15 +511,18 @@
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 2,
-        "x": 390,
-        "y": 780,
+        "outputs": 3,
+        "x": 440,
+        "y": 800,
         "wires": [
             [
-                "ae02f83185565dd5"
+                "0953f876a07f0bb7"
             ],
             [
-                "238bfef97e66f460"
+                "17ca43154051aeb8"
+            ],
+            [
+                "307edd7fbd63d915"
             ]
         ]
     },
@@ -558,7 +566,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 820,
+        "x": 1020,
         "y": 420,
         "wires": []
     },
@@ -570,8 +578,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 570,
-        "y": 420,
+        "x": 770,
+        "y": 380,
         "wires": [
             [
                 "958bc17db8e465a5",
@@ -597,7 +605,7 @@
         "y": 420,
         "wires": [
             [
-                "968b84a11c2b83e0"
+                "4a81410923b29a98"
             ]
         ]
     },
@@ -825,56 +833,6 @@
         ]
     },
     {
-        "id": "238bfef97e66f460",
-        "type": "switch",
-        "z": "07b8b9c1ab058a4b",
-        "name": "Is immersion ON?",
-        "property": "immersion",
-        "propertyType": "flow",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "on",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 590,
-        "y": 860,
-        "wires": [
-            [
-                "17ca43154051aeb8"
-            ]
-        ]
-    },
-    {
-        "id": "ae02f83185565dd5",
-        "type": "switch",
-        "z": "07b8b9c1ab058a4b",
-        "name": "Is immersion OFF?",
-        "property": "immersion",
-        "propertyType": "flow",
-        "rules": [
-            {
-                "t": "neq",
-                "v": "on",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 590,
-        "y": 720,
-        "wires": [
-            [
-                "5e8648ed17c470be"
-            ]
-        ]
-    },
-    {
         "id": "d499e2fcd9132861",
         "type": "change",
         "z": "07b8b9c1ab058a4b",
@@ -908,7 +866,7 @@
         "z": "07b8b9c1ab058a4b",
         "name": "At least hour since last 'on' phase AND more than 1,000 Wh forecast in next hour?",
         "info": "",
-        "x": 800,
+        "x": 1040,
         "y": 760,
         "wires": []
     },
@@ -982,8 +940,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 850,
-        "y": 660,
+        "x": 830,
+        "y": 680,
         "wires": [
             [
                 "9ca850e36b147615"
@@ -1176,7 +1134,7 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload",
+        "complete": "currentTime",
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
@@ -1316,6 +1274,96 @@
         "x": 950,
         "y": 1000,
         "wires": []
+    },
+    {
+        "id": "4a81410923b29a98",
+        "type": "switch",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "property": "statusCode",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "200",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 570,
+        "y": 420,
+        "wires": [
+            [
+                "968b84a11c2b83e0"
+            ],
+            [
+                "dfa3725cba051db1"
+            ]
+        ]
+    },
+    {
+        "id": "dfa3725cba051db1",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Forecast failed",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "statusCode",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "307edd7fbd63d915",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Immersion state error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "0953f876a07f0bb7",
+        "type": "switch",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Battery charged enough?",
+        "property": "SoC",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "100",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 550,
+        "y": 720,
+        "wires": [
+            [
+                "5e8648ed17c470be"
+            ]
+        ]
     },
     {
         "id": "9abb00aef19ebed9",
