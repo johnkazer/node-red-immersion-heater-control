@@ -1,6 +1,6 @@
 [
     {
-        "id": "3c8f4919.644d06",
+        "id": "04078e243164b50e",
         "type": "subflow",
         "name": "GivEnergy Rest API",
         "info": "",
@@ -11,7 +11,7 @@
                 "y": 80,
                 "wires": [
                     {
-                        "id": "d2da77e0.5b1258"
+                        "id": "ef55abe0d3f0c829"
                     }
                 ]
             }
@@ -22,29 +22,30 @@
                 "y": 80,
                 "wires": [
                     {
-                        "id": "146c44fa.43a18b",
+                        "id": "09b153513016bac8",
                         "port": 0
                     }
                 ]
             }
         ],
         "env": [],
+        "meta": {},
         "color": "#DDAA99",
         "status": {
             "x": 1680,
             "y": 180,
             "wires": [
                 {
-                    "id": "abbe4eb7.82fc7",
+                    "id": "2fb2ed2e04729f28",
                     "port": 0
                 }
             ]
         }
     },
     {
-        "id": "2d22c520.42899a",
+        "id": "2bf0990f0653e0ac",
         "type": "function",
-        "z": "3c8f4919.644d06",
+        "z": "04078e243164b50e",
         "name": "Create url",
         "func": "msg.headers.Authorization= \"Bearer \" + global.get(\"GivEnergyApiKey\");\n\nmsg.url = global.get(\"GivEnergyAPIURL\") + msg.apiCall;\n\n//params are added automatically\n\nreturn msg;",
         "outputs": 1,
@@ -56,14 +57,14 @@
         "y": 80,
         "wires": [
             [
-                "146c44fa.43a18b"
+                "09b153513016bac8"
             ]
         ]
     },
     {
-        "id": "146c44fa.43a18b",
+        "id": "09b153513016bac8",
         "type": "http request",
-        "z": "3c8f4919.644d06",
+        "z": "04078e243164b50e",
         "name": "Make the Call",
         "method": "use",
         "ret": "obj",
@@ -78,14 +79,14 @@
         "y": 80,
         "wires": [
             [
-                "abbe4eb7.82fc7"
+                "2fb2ed2e04729f28"
             ]
         ]
     },
     {
-        "id": "36a0d420.a5f1dc",
+        "id": "f608f24dc8a16592",
         "type": "change",
-        "z": "3c8f4919.644d06",
+        "z": "04078e243164b50e",
         "name": "Set Params in payload",
         "rules": [
             {
@@ -105,14 +106,14 @@
         "y": 80,
         "wires": [
             [
-                "2d22c520.42899a"
+                "2bf0990f0653e0ac"
             ]
         ]
     },
     {
-        "id": "d2da77e0.5b1258",
+        "id": "ef55abe0d3f0c829",
         "type": "change",
-        "z": "3c8f4919.644d06",
+        "z": "04078e243164b50e",
         "name": "payload {}",
         "rules": [
             {
@@ -132,14 +133,14 @@
         "y": 80,
         "wires": [
             [
-                "3ff31db7.d3a562"
+                "0ca2908ce86ce2cd"
             ]
         ]
     },
     {
-        "id": "3ff31db7.d3a562",
+        "id": "0ca2908ce86ce2cd",
         "type": "change",
-        "z": "3c8f4919.644d06",
+        "z": "04078e243164b50e",
         "name": "Set Headers {}",
         "rules": [
             {
@@ -159,14 +160,14 @@
         "y": 80,
         "wires": [
             [
-                "cfda7646.16fa98"
+                "49947bd9e2ed703b"
             ]
         ]
     },
     {
-        "id": "cfda7646.16fa98",
+        "id": "49947bd9e2ed703b",
         "type": "change",
-        "z": "3c8f4919.644d06",
+        "z": "04078e243164b50e",
         "name": "content-type",
         "rules": [
             {
@@ -186,16 +187,16 @@
         "y": 80,
         "wires": [
             [
-                "36a0d420.a5f1dc"
+                "f608f24dc8a16592"
             ]
         ]
     },
     {
-        "id": "abbe4eb7.82fc7",
+        "id": "2fb2ed2e04729f28",
         "type": "function",
-        "z": "3c8f4919.644d06",
+        "z": "04078e243164b50e",
         "name": "",
-        "func": "var statusMsg;\nif (msg.statusCode==200) \n{\n    statusMsg = { fill:\"green\", shape:\"dot\", text:\"Call successful\" };\n} else\n{\n    statusMsg = { fill:\"red\", shape:\"dot\", text:\"Call failed\" };\n}\n\nmsg.payload= statusMsg;\nreturn msg;",
+        "func": "var statusMsg;\nif (msg.statusCode==200 || msg.statusCode==201) \n{\n    statusMsg = { fill:\"green\", shape:\"dot\", text:\"Call successful\" };\n} else\n{\n    statusMsg = { fill:\"red\", shape:\"dot\", text:\"Call failed\" };\n}\n\nmsg.payload= statusMsg;\nmsg.payload.topic = \"solar\"\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -216,21 +217,6 @@
         "env": []
     },
     {
-        "id": "fc396cb3ac39a24f",
-        "type": "subflow:3c8f4919.644d06",
-        "z": "07b8b9c1ab058a4b",
-        "name": "",
-        "env": [],
-        "x": 780,
-        "y": 300,
-        "wires": [
-            [
-                "b66c36cee7a300e4",
-                "9525b2fc1acc3897"
-            ]
-        ]
-    },
-    {
         "id": "67c3660acbc48e1f",
         "type": "change",
         "z": "07b8b9c1ab058a4b",
@@ -240,7 +226,7 @@
                 "t": "set",
                 "p": "apiCall",
                 "pt": "msg",
-                "to": "inverter/<GivEnergy inverter serial number>/system-data/latest",
+                "to": "inverter/CE2131G090/system-data/latest",
                 "tot": "str"
             }
         ],
@@ -249,7 +235,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 370,
+        "x": 480,
         "y": 300,
         "wires": [
             [
@@ -272,7 +258,7 @@
         "y": 300,
         "wires": [
             [
-                "67c3660acbc48e1f"
+                "edef4452192973fc"
             ]
         ]
     },
@@ -295,11 +281,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 560,
+        "x": 630,
         "y": 300,
         "wires": [
             [
-                "fc396cb3ac39a24f"
+                "0c90b3f6301991af"
             ]
         ]
     },
@@ -311,7 +297,7 @@
         "props": [
             {
                 "p": "payload.apiKey",
-                "v": "<insert API key>",
+                "v": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5NTc3MDIxOS1jYWE2LTRmOTctOTE3Ni0zNDBlZGMzZDQxNTgiLCJqdGkiOiI1NzE0OTdmMmExZDMwODk5YjU0YjJmMzZmMTliMTlhMzI4YzUzMTU2OWU4ZTJkNjZlYmY5ZmYwZmQ5NGU2MGVkMTU2NWVjZWY4YWIwNDZhYSIsImlhdCI6MTY1ODk5NzgyMS45MjgyNjcsIm5iZiI6MTY1ODk5NzgyMS45MjgyNzEsImV4cCI6MTY5MDUzMzgyMS45MjMzNjUsInN1YiI6IjY3NzYiLCJzY29wZXMiOlsiYXBpIl19.zroeTPEeRREyuQujQv92pm-1kEMQ6ReetGbxtqx1K5nZxJIPrMkMuLl5nRH6F2bOUDn7Tlx-wHvZbDEOyyHpVg",
                 "vt": "str"
             }
         ],
@@ -347,7 +333,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 440,
+        "x": 450,
         "y": 120,
         "wires": [
             []
@@ -370,8 +356,8 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 750,
-        "y": 120,
+        "x": 220,
+        "y": 160,
         "wires": [
             [
                 "ea4ce4544c9fdb84"
@@ -397,8 +383,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 970,
-        "y": 120,
+        "x": 440,
+        "y": 160,
         "wires": [
             []
         ]
@@ -407,19 +393,19 @@
         "id": "c907db1a631f577c",
         "type": "comment",
         "z": "07b8b9c1ab058a4b",
-        "name": "Step 1 - Set API ( change inject node with your key )",
+        "name": "Step 1 - Set API and URL ( add your API keys as required )",
         "info": "",
-        "x": 290,
-        "y": 80,
+        "x": 310,
+        "y": 40,
         "wires": []
     },
     {
         "id": "a757a1826706e568",
         "type": "comment",
         "z": "07b8b9c1ab058a4b",
-        "name": "Step 2 - Set URL",
+        "name": "Step 2 - Set power level, depending on dual-switch on immersion",
         "info": "",
-        "x": 720,
+        "x": 830,
         "y": 80,
         "wires": []
     },
@@ -430,7 +416,7 @@
         "name": "Step 3a - Query APIs ( optionally view output in debug window )",
         "info": "",
         "x": 330,
-        "y": 220,
+        "y": 240,
         "wires": []
     },
     {
@@ -463,8 +449,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 260,
-        "y": 880,
+        "x": 420,
+        "y": 860,
         "wires": []
     },
     {
@@ -483,7 +469,8 @@
         "wires": [
             [
                 "3b53fd1b624a5183",
-                "0d84438b10421337"
+                "0d84438b10421337",
+                "3257a93cb2eba438"
             ]
         ]
     },
@@ -545,8 +532,8 @@
         "mustacheAltTags": false,
         "outputProperties": [],
         "queue": "none",
-        "x": 1710,
-        "y": 620,
+        "x": 1490,
+        "y": 700,
         "wires": [
             [
                 "d9b434a4d617f95c"
@@ -595,7 +582,7 @@
         "method": "GET",
         "ret": "txt",
         "paytoqs": "ignore",
-        "url": "https://api.forecast.solar/<insert API key>/estimate/watthours/52/0/25/0/3",
+        "url": "https://api.forecast.solar/3529083a989ab18e/estimate/watthours/52/0/25/0/3",
         "tls": "",
         "persist": true,
         "proxy": "",
@@ -698,8 +685,8 @@
         "rules": [
             {
                 "t": "gt",
-                "v": "1000",
-                "vt": "num"
+                "v": "powerDemand",
+                "vt": "flow"
             },
             {
                 "t": "else"
@@ -746,7 +733,7 @@
         "rules": [
             {
                 "t": "lt",
-                "v": "2000",
+                "v": "2800",
                 "vt": "num"
             },
             {
@@ -786,7 +773,7 @@
         "mustacheAltTags": false,
         "outputProperties": [],
         "queue": "none",
-        "x": 1710,
+        "x": 1310,
         "y": 860,
         "wires": [
             [
@@ -801,72 +788,16 @@
         "name": "If immersion was previously on and now inverter load is < 2,000 then assume water heating has stopped",
         "info": "",
         "x": 970,
-        "y": 900,
+        "y": 920,
         "wires": []
-    },
-    {
-        "id": "ffcbea95092a1dc1",
-        "type": "change",
-        "z": "07b8b9c1ab058a4b",
-        "name": "Immersion \"on\"",
-        "rules": [
-            {
-                "t": "set",
-                "p": "immersion",
-                "pt": "flow",
-                "to": "on",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1480,
-        "y": 700,
-        "wires": [
-            [
-                "115f26f0be0b4708",
-                "661069883157c5d8"
-            ]
-        ]
-    },
-    {
-        "id": "d499e2fcd9132861",
-        "type": "change",
-        "z": "07b8b9c1ab058a4b",
-        "name": "Immersion \"off\"",
-        "rules": [
-            {
-                "t": "set",
-                "p": "immersion",
-                "pt": "flow",
-                "to": "off",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1400,
-        "y": 860,
-        "wires": [
-            [
-                "e1e104f8aae61ce9",
-                "48d78eb1485299e5"
-            ]
-        ]
     },
     {
         "id": "b3157fe841130662",
         "type": "comment",
         "z": "07b8b9c1ab058a4b",
-        "name": "At least hour since last 'on' phase AND more than 1,000 Wh forecast in next hour?",
+        "name": "At least hour since last 'on' phase AND more than flow.powerDemand kWh forecast in next hour?",
         "info": "",
-        "x": 1040,
+        "x": 1030,
         "y": 760,
         "wires": []
     },
@@ -911,12 +842,21 @@
         "dataType": "json",
         "mergeContext": "",
         "mustacheAltTags": false,
-        "outputProperties": [],
+        "outputProperties": [
+            {
+                "property": "immersion",
+                "propertyType": "flow",
+                "value": "on",
+                "valueType": "str"
+            }
+        ],
         "queue": "none",
-        "x": 1750,
-        "y": 700,
+        "x": 1710,
+        "y": 680,
         "wires": [
-            []
+            [
+                "115f26f0be0b4708"
+            ]
         ]
     },
     {
@@ -944,7 +884,8 @@
         "y": 680,
         "wires": [
             [
-                "9ca850e36b147615"
+                "9ca850e36b147615",
+                "661069883157c5d8"
             ]
         ]
     },
@@ -969,12 +910,22 @@
         "dataType": "json",
         "mergeContext": "",
         "mustacheAltTags": false,
-        "outputProperties": [],
+        "outputProperties": [
+            {
+                "property": "immersion",
+                "propertyType": "flow",
+                "value": "off",
+                "valueType": "str"
+            }
+        ],
         "queue": "none",
-        "x": 1750,
-        "y": 920,
+        "x": 1570,
+        "y": 840,
         "wires": [
-            []
+            [
+                "e1e104f8aae61ce9",
+                "4505287956560db2"
+            ]
         ]
     },
     {
@@ -1036,8 +987,7 @@
         "y": 860,
         "wires": [
             [
-                "4505287956560db2",
-                "d499e2fcd9132861"
+                "48d78eb1485299e5"
             ]
         ]
     },
@@ -1065,7 +1015,7 @@
         "y": 720,
         "wires": [
             [
-                "ffcbea95092a1dc1"
+                "661069883157c5d8"
             ],
             [
                 "78cb813bea1d6266"
@@ -1117,8 +1067,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1400,
-        "y": 980,
+        "x": 1680,
+        "y": 940,
         "wires": [
             [
                 "9cab90dcf4f05990"
@@ -1138,8 +1088,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1670,
-        "y": 560,
+        "x": 1890,
+        "y": 680,
         "wires": []
     },
     {
@@ -1155,8 +1105,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1670,
-        "y": 820,
+        "x": 1790,
+        "y": 840,
         "wires": []
     },
     {
@@ -1173,7 +1123,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1470,
-        "y": 740,
+        "y": 760,
         "wires": []
     },
     {
@@ -1224,7 +1174,8 @@
         "y": 300,
         "wires": [
             [
-                "b9d9bc33bf4d92c6"
+                "b9d9bc33bf4d92c6",
+                "b66c36cee7a300e4"
             ]
         ]
     },
@@ -1364,6 +1315,988 @@
                 "5e8648ed17c470be"
             ]
         ]
+    },
+    {
+        "id": "a8cef4aa66067b4f",
+        "type": "inject",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Set power demand LOW",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 730,
+        "y": 120,
+        "wires": [
+            [
+                "8d1afaa3339f10d3"
+            ]
+        ]
+    },
+    {
+        "id": "8d1afaa3339f10d3",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "powerDemand",
+                "pt": "flow",
+                "to": "500",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 980,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2f02cf940971e31b",
+        "type": "inject",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Set power demand HIGH",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1350,
+        "y": 120,
+        "wires": [
+            [
+                "6a9b9ae89c33d6ce"
+            ]
+        ]
+    },
+    {
+        "id": "6a9b9ae89c33d6ce",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "powerDemand",
+                "pt": "flow",
+                "to": "1000",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1600,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bd6b5d39c6584fda",
+        "type": "inject",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Initialise immersion state",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1030,
+        "y": 180,
+        "wires": [
+            [
+                "7a547571d0bbb37d",
+                "a06adcc217df71dd"
+            ]
+        ]
+    },
+    {
+        "id": "7a547571d0bbb37d",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Set OFF by default",
+        "rules": [
+            {
+                "t": "set",
+                "p": "immersion",
+                "pt": "flow",
+                "to": "off",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "immersionOffTime",
+                "pt": "flow",
+                "to": "",
+                "tot": "date"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1270,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a06adcc217df71dd",
+        "type": "api-call-service",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Turn immersion off",
+        "server": "9abb00aef19ebed9",
+        "version": 5,
+        "debugenabled": false,
+        "domain": "switch",
+        "service": "turn_off",
+        "areaId": [],
+        "deviceId": [
+            "f2c3a754b3fb3db2e9264f33aa096cc4"
+        ],
+        "entityId": [
+            "switch.frient_immersion_switch_on_off"
+        ],
+        "data": "",
+        "dataType": "json",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "x": 1270,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bb7354b050b87b3e",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "OR",
+        "info": "",
+        "x": 1150,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "9948a5df7ad19366",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "THEN",
+        "info": "",
+        "x": 830,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "0c90b3f6301991af",
+        "type": "subflow:04078e243164b50e",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "x": 800,
+        "y": 300,
+        "wires": [
+            [
+                "9525b2fc1acc3897"
+            ]
+        ]
+    },
+    {
+        "id": "f798333d4aa61f50",
+        "type": "inject",
+        "z": "07b8b9c1ab058a4b",
+        "name": "On holiday",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1300,
+        "y": 380,
+        "wires": [
+            [
+                "deae05bcbd70559a"
+            ]
+        ]
+    },
+    {
+        "id": "8f9c23eb12a5d155",
+        "type": "inject",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Default is \"at home\"",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1610,
+        "y": 180,
+        "wires": [
+            [
+                "4e2c354a7ad624cc"
+            ]
+        ]
+    },
+    {
+        "id": "4e2c354a7ad624cc",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "holiday",
+                "pt": "flow",
+                "to": "no",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1820,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "edef4452192973fc",
+        "type": "switch",
+        "z": "07b8b9c1ab058a4b",
+        "name": "On holiday?",
+        "property": "holiday",
+        "propertyType": "flow",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "no",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "yes",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 290,
+        "y": 300,
+        "wires": [
+            [
+                "67c3660acbc48e1f"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "8baa7b1217ae5928",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "AND",
+        "info": "",
+        "x": 1430,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "c8e0d48a52e36747",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Add a HA button instead... when support v2021.12",
+        "info": "",
+        "x": 1430,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "3257a93cb2eba438",
+        "type": "api-get-history",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Immersion Switch History",
+        "server": "9abb00aef19ebed9",
+        "version": 0,
+        "startdate": "",
+        "enddate": "",
+        "entityid": "switch.frient_immersion_switch_on_off",
+        "entityidtype": "is",
+        "useRelativeTime": false,
+        "relativeTime": "",
+        "flatten": true,
+        "output_type": "array",
+        "output_location_type": "msg",
+        "output_location": "payload",
+        "x": 210,
+        "y": 1100,
+        "wires": [
+            [
+                "e1245f8edb0fa085",
+                "4e55b616e723385c"
+            ]
+        ]
+    },
+    {
+        "id": "e1245f8edb0fa085",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 450,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "4e55b616e723385c",
+        "type": "function",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Check for \"stuck on\"",
+        "func": "// Check the gap between \"on\" and \"off\", or between \"on\" and the\n// end of the history array. If longer than an hour there's a\n// problem (stuck \"on)\")\nconst instance = {\n    \"entity_id\": \"switch.frient_immersion_switch_on_off\",\n    \"state\":\"off\",\n    \"attributes\": {\n        \"friendly_name\":\"Frient immersion switch on_off\"\n    },\n    \"last_changed\":\"2022-04-21T14:14:11.472747+00:00\",\n    \"last_updated\":\"2022-04-21T14:14:11.472747+00:00\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 1100,
+        "wires": [
+            [
+                "4f0c708f10da95c7"
+            ]
+        ]
+    },
+    {
+        "id": "4f0c708f10da95c7",
+        "type": "switch",
+        "z": "07b8b9c1ab058a4b",
+        "name": "If \"stuck\"",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "stuck",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 740,
+        "y": 1100,
+        "wires": [
+            [
+                "beb2a70f7f069d25"
+            ]
+        ]
+    },
+    {
+        "id": "beb2a70f7f069d25",
+        "type": "api-call-service",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Immersion stuck \"on\"",
+        "server": "9abb00aef19ebed9",
+        "version": 5,
+        "debugenabled": false,
+        "domain": "notify",
+        "service": "mobile_app_g8441",
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "data": "{\"message\":\"Immersion stuck on\",\"data\":{\"type\":\"announce\"},\"target\":\"mobile_app_g8441\"}",
+        "dataType": "json",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "x": 960,
+        "y": 1100,
+        "wires": [
+            [
+                "952cfb874f981e86",
+                "83ed4f1217dca428"
+            ]
+        ]
+    },
+    {
+        "id": "952cfb874f981e86",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "STUCK",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1200,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "deae05bcbd70559a",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "holiday",
+                "pt": "flow",
+                "to": "yes",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1480,
+        "y": 380,
+        "wires": [
+            [
+                "8c083dd37d595ead"
+            ]
+        ]
+    },
+    {
+        "id": "d9965e8a6f51c78c",
+        "type": "inject",
+        "z": "07b8b9c1ab058a4b",
+        "name": "At home",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1300,
+        "y": 420,
+        "wires": [
+            [
+                "e07a0632a66c5a4d"
+            ]
+        ]
+    },
+    {
+        "id": "e07a0632a66c5a4d",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "holiday",
+                "pt": "flow",
+                "to": "no",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1480,
+        "y": 420,
+        "wires": [
+            [
+                "06b4a5dece261f1e"
+            ]
+        ]
+    },
+    {
+        "id": "8c083dd37d595ead",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Holiday",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1660,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "06b4a5dece261f1e",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Home",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1650,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "72a567cd9e07269a",
+        "type": "inject",
+        "z": "07b8b9c1ab058a4b",
+        "name": "https://api.carbonintensity.org.uk/",
+        "props": [
+            {
+                "p": "url",
+                "v": "https://api.carbonintensity.org.uk/",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 230,
+        "y": 80,
+        "wires": [
+            [
+                "b3034e4b02336cda"
+            ]
+        ]
+    },
+    {
+        "id": "b3034e4b02336cda",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Set URL",
+        "rules": [
+            {
+                "t": "set",
+                "p": "CO2intensityAPIURL",
+                "pt": "global",
+                "to": "url",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a0bdca2fe903891f",
+        "type": "poll-state",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Fetch CO2 intensity",
+        "server": "9abb00aef19ebed9",
+        "version": 2,
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "updateinterval": "1",
+        "updateIntervalType": "num",
+        "updateIntervalUnits": "hours",
+        "outputinitially": false,
+        "outputonchanged": false,
+        "entity_id": "sensor.co2_intensity",
+        "state_type": "num",
+        "halt_if": "",
+        "halt_if_type": "num",
+        "halt_if_compare": "is",
+        "outputs": 1,
+        "x": 190,
+        "y": 1380,
+        "wires": [
+            [
+                "2c3ceb0a19014a0c",
+                "dbb207736134a469"
+            ]
+        ]
+    },
+    {
+        "id": "2c3ceb0a19014a0c",
+        "type": "switch",
+        "z": "07b8b9c1ab058a4b",
+        "name": "CO2 threshold check",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lt",
+                "v": "gasEF",
+                "vt": "flow"
+            },
+            {
+                "t": "eq",
+                "v": "unavailable",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 440,
+        "y": 1380,
+        "wires": [
+            [
+                "fa5e4b651a7cd103",
+                "27b7712b97dab068"
+            ],
+            [
+                "20d81735ebefc242"
+            ],
+            [
+                "84ae632e321b2e10"
+            ]
+        ]
+    },
+    {
+        "id": "94e16f6f758c35d0",
+        "type": "function",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Check if immersion has been off a long time",
+        "func": "const longTimeSinceImmersionOn = flow.immersionOffTime + 24 * 3600\nconst currentTime = msg.payload\nif (currentTime > longTimeSinceImmersionOn) {\n    msg.payload = \"forceOn\"\n} else {\n    msg.payload = \"Immersion was on recently, even tho CO2 is low\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 1380,
+        "wires": [
+            [
+                "f63baafdfbefd68e",
+                "dba9f6dacfd8fcba"
+            ]
+        ]
+    },
+    {
+        "id": "fa5e4b651a7cd103",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Get the time",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 690,
+        "y": 1380,
+        "wires": [
+            [
+                "94e16f6f758c35d0"
+            ]
+        ]
+    },
+    {
+        "id": "f63baafdfbefd68e",
+        "type": "switch",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "\"forceOn\"",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1310,
+        "y": 1380,
+        "wires": [
+            [
+                "9ca850e36b147615",
+                "661069883157c5d8",
+                "83fa208134293f4a"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "20d81735ebefc242",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 1420,
+        "wires": []
+    },
+    {
+        "id": "83fa208134293f4a",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1510,
+        "y": 1380,
+        "wires": []
+    },
+    {
+        "id": "d5a7e0f5a70dadb2",
+        "type": "inject",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Gas EF (gCO2e/kWh)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "215",
+        "payloadType": "num",
+        "x": 1620,
+        "y": 280,
+        "wires": [
+            [
+                "adc5af820940f297"
+            ]
+        ]
+    },
+    {
+        "id": "adc5af820940f297",
+        "type": "change",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "gasEF",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1840,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b53d8c6c8a75cf59",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Set the grid CO2 threshold",
+        "info": "",
+        "x": 1610,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "27b7712b97dab068",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "dbb207736134a469",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "dba9f6dacfd8fcba",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1350,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "84ae632e321b2e10",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "7842e492556ad323",
+        "type": "comment",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Check the grid CO2 value, if is low and immersion's been off a while - turn it on",
+        "info": "",
+        "x": 350,
+        "y": 1240,
+        "wires": []
     },
     {
         "id": "9abb00aef19ebed9",
