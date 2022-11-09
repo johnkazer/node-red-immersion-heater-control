@@ -1148,7 +1148,9 @@
         "x": 1740,
         "y": 980,
         "wires": [
-            []
+            [
+                "2f1c34f1ab37544c"
+            ]
         ]
     },
     {
@@ -2055,7 +2057,7 @@
         "type": "function",
         "z": "07b8b9c1ab058a4b",
         "name": "Check if immersion has been off a long time",
-        "func": "const longTimeSinceImmersionOn = flow.immersionOffTime + 24 * 3600\nconst currentTime = msg.payload\nif (currentTime > longTimeSinceImmersionOn) {\n    msg.payload = \"forceOn\"\n} else {\n    msg.payload = \"Immersion was on recently, even tho CO2 is low\"\n}\nreturn msg;",
+        "func": "// calc 24 hours on from the last Off time in msec\nconst longTimeSinceImmersionOn = msg.offTime + (24 * 3600 * 1000)\nconst currentTime = msg.currentTime\nlet timeData = {}\nif (currentTime > longTimeSinceImmersionOn) {\n    timeData.msg = \"forceOn\"\n} else {\n    timeData.msg = \"Immersion was on recently, even tho CO2 is low\"\n}\ntimeData.currentTime = Math.round(currentTime / 1000)\ntimeData.offTime = Math.round(msg.offTime / 1000)\ntimeData.longTimeSinceOn = Math.round(longTimeSinceImmersionOn / 1000)\nmsg.payload = timeData\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2066,7 +2068,7 @@
         "wires": [
             [
                 "f63baafdfbefd68e",
-                "dba9f6dacfd8fcba"
+                "c954fa63758b88f3"
             ]
         ]
     },
@@ -2078,10 +2080,17 @@
         "rules": [
             {
                 "t": "set",
-                "p": "payload",
+                "p": "currentTime",
                 "pt": "msg",
                 "to": "",
                 "tot": "date"
+            },
+            {
+                "t": "set",
+                "p": "offTime",
+                "pt": "msg",
+                "to": "immersionOffTime",
+                "tot": "flow"
             }
         ],
         "action": "",
@@ -2102,12 +2111,12 @@
         "type": "switch",
         "z": "07b8b9c1ab058a4b",
         "name": "",
-        "property": "payload",
+        "property": "payload.msg",
         "propertyType": "msg",
         "rules": [
             {
                 "t": "eq",
-                "v": "\"forceOn\"",
+                "v": "forceOn",
                 "vt": "str"
             },
             {
@@ -2125,22 +2134,25 @@
                 "661069883157c5d8",
                 "83fa208134293f4a"
             ],
-            []
+            [
+                "6ac736f2f839e5bf"
+            ]
         ]
     },
     {
         "id": "20d81735ebefc242",
         "type": "debug",
         "z": "07b8b9c1ab058a4b",
-        "name": "",
+        "name": "Failed to get CO2 data",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 690,
+        "x": 720,
         "y": 1420,
         "wires": []
     },
@@ -2148,15 +2160,16 @@
         "id": "83fa208134293f4a",
         "type": "debug",
         "z": "07b8b9c1ab058a4b",
-        "name": "",
+        "name": "time data - force ON",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1510,
+        "x": 1540,
         "y": 1380,
         "wires": []
     },
@@ -2228,15 +2241,16 @@
         "id": "27b7712b97dab068",
         "type": "debug",
         "z": "07b8b9c1ab058a4b",
-        "name": "",
+        "name": "Low grid CO2",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 690,
+        "x": 700,
         "y": 1320,
         "wires": []
     },
@@ -2257,31 +2271,16 @@
         "wires": []
     },
     {
-        "id": "dba9f6dacfd8fcba",
-        "type": "debug",
-        "z": "07b8b9c1ab058a4b",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1350,
-        "y": 1480,
-        "wires": []
-    },
-    {
         "id": "84ae632e321b2e10",
         "type": "debug",
         "z": "07b8b9c1ab058a4b",
-        "name": "",
+        "name": "CO2 too high",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 690,
@@ -2296,6 +2295,90 @@
         "info": "",
         "x": 350,
         "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "2f1c34f1ab37544c",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Set OFF time variable",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1720,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "6ac736f2f839e5bf",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "time data - stays OFF",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1540,
+        "y": 1420,
+        "wires": []
+    },
+    {
+        "id": "68376fee89f7fb8c",
+        "type": "humanizer",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "input": "",
+        "x": 1350,
+        "y": 1520,
+        "wires": [
+            [
+                "4d4a896c19e98986"
+            ]
+        ]
+    },
+    {
+        "id": "c954fa63758b88f3",
+        "type": "function",
+        "z": "07b8b9c1ab058a4b",
+        "name": "",
+        "func": "msg.payload = msg.payload.longTimeSinceOn - msg.payload.currentTime\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1180,
+        "y": 1520,
+        "wires": [
+            [
+                "68376fee89f7fb8c"
+            ]
+        ]
+    },
+    {
+        "id": "4d4a896c19e98986",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "time difference",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1520,
+        "y": 1520,
         "wires": []
     },
     {
