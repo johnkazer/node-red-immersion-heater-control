@@ -2031,18 +2031,26 @@
                 "vt": "str"
             },
             {
+                "t": "eq",
+                "v": "NaN",
+                "vt": "str"
+            },
+            {
                 "t": "else"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 3,
+        "outputs": 4,
         "x": 440,
         "y": 1380,
         "wires": [
             [
                 "fa5e4b651a7cd103",
                 "27b7712b97dab068"
+            ],
+            [
+                "20d81735ebefc242"
             ],
             [
                 "20d81735ebefc242"
@@ -2350,7 +2358,7 @@
         "type": "function",
         "z": "07b8b9c1ab058a4b",
         "name": "",
-        "func": "msg.payload = msg.payload.longTimeSinceOn - msg.payload.currentTime\nreturn msg;",
+        "func": "msg.payload = msg.payload.offTime - msg.payload.currentTime\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
