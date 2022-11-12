@@ -2046,8 +2046,8 @@
         "y": 1380,
         "wires": [
             [
-                "fa5e4b651a7cd103",
-                "27b7712b97dab068"
+                "27b7712b97dab068",
+                "447241e5b9c8e0bf"
             ],
             [
                 "20d81735ebefc242"
@@ -2071,7 +2071,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1030,
+        "x": 1210,
         "y": 1380,
         "wires": [
             [
@@ -2106,7 +2106,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 690,
+        "x": 910,
         "y": 1380,
         "wires": [
             [
@@ -2134,7 +2134,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1310,
+        "x": 1490,
         "y": 1380,
         "wires": [
             [
@@ -2161,7 +2161,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 720,
-        "y": 1420,
+        "y": 1500,
         "wires": []
     },
     {
@@ -2177,8 +2177,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1540,
-        "y": 1380,
+        "x": 1720,
+        "y": 1340,
         "wires": []
     },
     {
@@ -2292,7 +2292,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 690,
-        "y": 1480,
+        "y": 1560,
         "wires": []
     },
     {
@@ -2335,8 +2335,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1540,
-        "y": 1420,
+        "x": 1720,
+        "y": 1400,
         "wires": []
     },
     {
@@ -2387,6 +2387,45 @@
         "statusType": "auto",
         "x": 1520,
         "y": 1520,
+        "wires": []
+    },
+    {
+        "id": "447241e5b9c8e0bf",
+        "type": "time-range-switch",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Avoid peak time",
+        "lat": "",
+        "lon": "",
+        "startTime": "16:00",
+        "endTime": "20:00",
+        "startOffset": 0,
+        "endOffset": 0,
+        "x": 700,
+        "y": 1380,
+        "wires": [
+            [
+                "ef4c5deca417b6e4"
+            ],
+            [
+                "fa5e4b651a7cd103"
+            ]
+        ]
+    },
+    {
+        "id": "ef4c5deca417b6e4",
+        "type": "debug",
+        "z": "07b8b9c1ab058a4b",
+        "name": "Low CO2 but avoiding peak time",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 1320,
         "wires": []
     },
     {
